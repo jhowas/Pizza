@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredient Calculation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 5px;
+            margin: 5px 0 15px;
+        }
+        button {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ingredient Calculation</h1>
+
+    <form id="calcForm">
+        <label for="hydration">IDRATAZIONE (%):</label>
+        <input type="number" id="hydration" name="hydration" step="0.1" required>
+
+        <label for="flour">FARINA (gr):</label>
+        <input type="number" id="flour" name="flour" step="0.1" required>
+
+        <button type="button" onclick="calculateIngredients()">Calcola</button>
+    </form>
+
+    <h2>Calculated Ingredients:</h2>
+    <div id="results"></div>
+
+    <script>
+        function calculateIngredients() {
+            // Get input values
+            var hydration = parseFloat(document.getElementById('hydration').value);
+            var flour = parseFloat(document.getElementById('flour').value);
+
+            if (isNaN(hydration) || isNaN(flour)) {
+                alert("Please enter valid numbers for both IDRATAZIONE and FARINA.");
+                return;
+            }
+
+            // Calculations
+            var acqua = hydration * flour / 100;
+            var sale = 2.5 * flour / 100;
+            var lievito8h = 1.43 * flour / 100;
+            var lievito24h = 0.525 * flour / 100;
+            var lievitoSecco = 0.36 * flour / 100;
+            var malto = flour / 100;
+            var acquaPrimoStep = 50 * flour / 100;
+            var acquaSecondoStep = acqua - acquaPrimoStep;
+            var olio = 2 * flour / 100;
+
+            // Output results in a nice format
+            var resultHTML = `
+                <ul>
+                    <li>IDRATAZIONE (%): ${hydration.toFixed(1)}</li>
+                    <li>FARINA (gr): ${flour.toFixed(1)}</li>
+                    <li>ACQUA (ml): ${acqua.toFixed(1)}</li>
+                    <li>SALE (gr): ${sale.toFixed(1)}</li>
+                    <li>LIEVITO (8h) (gr): ${lievito8h.toFixed(1)}</li>
+                    <li>LIEVITO (24h) (gr): ${lievito24h.toFixed(1)}</li>
+                    <li>LIEVITO SECCO (gr): ${lievitoSecco.toFixed(1)}</li>
+                    <li>MALTO (gr): ${malto.toFixed(1)}</li>
+                    <li>OLIO (gr): ${olio.toFixed(1)}</li>
+                </ul>
+                <h3>Se si vuole separare il ciclo di preparazione:</h3>
+                <ul>
+                    <li>ACQUA PRIMO STEP (ml): ${acquaPrimoStep.toFixed(1)}</li>
+                    <li>ACQUA SECONDO STEP (ml): ${acquaSecondoStep.toFixed(1)}</li>
+                </ul>
+            `;
+
+            // Display results
+            document.getElementById('results').innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>
